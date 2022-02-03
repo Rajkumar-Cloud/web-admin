@@ -94,8 +94,6 @@ h6 span{
 .checkbox:checked + label:before {
   transform: translateX(44px) rotate(-270deg);
 }
-
-
 .card-3d-wrap {
   position: relative;
   width: 440px;
@@ -104,7 +102,7 @@ h6 span{
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   perspective: 800px;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 .card-3d-wrapper {
   width: 100%;
@@ -151,7 +149,9 @@ h6 span{
   z-index: 20;
   display: block;
 }
-
+.card-back .center-wrap h4 {
+    margin-bottom: 2px;
+}
 
 .form-group{ 
   position: relative;
@@ -321,5 +321,26 @@ h6 span{
             width: auto;
             display: block;
         }
+    }
+}
+.empty-errors-form {
+    text-align: left;
+    span {
+      color: #fff;
+      text-align: left;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+    mat-icon {
+      transition: all 1s ease-in;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: flex;
+      align-items: center;
+      color: red;
+      font-size: 32px;
+      width: auto;
+      height: auto;
     }
 }
