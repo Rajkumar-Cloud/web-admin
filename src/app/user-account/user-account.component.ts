@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
-import { first } from 'rxjs/operators';
+import { AlertService } from '../_services/alert.service';
+import { UserService } from '../_services/user.service';
 import { MustMatch } from '../_helpers/must-match.validator';
 @Component({
   selector: 'app-user-account',
@@ -16,12 +17,16 @@ export class UserAccountComponent implements OnInit {
   loading_reg = false;
   submitted = false;
   reg_submitted = false;
+  returnUrl: string;
 
-  constructor(private formBuilder:FormBuilder) { 
-    
+  constructor(private formBuilder:FormBuilder, private router: Router, private route: ActivatedRoute,
+    private authService: AuthenticationService, private userService: UserService, private alertService : AlertService) { 
+      // if(this.authService.currentUserValue) {
+      //   this.router.navigate(['/']);
+      // }
   }
 
-  ngOnInit() {  
+  ngOnInit() {
     this.userLoginform = this.formBuilder.group({
       username: ['',Validators.compose([Validators.required, Validators.email])],
       password: ['',Validators.compose([Validators.required, Validators.minLength(8)])]
@@ -29,12 +34,13 @@ export class UserAccountComponent implements OnInit {
     this.userRegisterform = this.formBuilder.group({
       fullname: ['',Validators.compose([Validators.required])],
       useremailId: ['',Validators.compose([Validators.required, Validators.email])],
-      usermobileno: ['',Validators.compose([Validators.required, Validators.maxLength(10)])],
+      usermobileno: ['',Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(10)])],
       userNewpassword: ['',Validators.compose([Validators.required, Validators.minLength(8)])],
-      userConfirmpassword: ['',Validators.compose([Validators.required])]
+      userConfirmpassword: ['', Validators.required]
     },{
       validator: MustMatch('userNewpassword', 'userConfirmpassword')
     });
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   get f() { return this.userLoginform.controls; }
@@ -46,8 +52,7 @@ export class UserAccountComponent implements OnInit {
       return;
     }
     this.loading = true;
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.userLoginform.value, null, 4));
-
+    
 
   }
   
@@ -56,6 +61,13 @@ export class UserAccountComponent implements OnInit {
     if(this.userRegisterform.invalid) {
       return;
     }
+    console.log(this.userRegisterform.controls['fullname']+':'+this.userRegisterform.controls['fullname'].value);
+    this.loading_reg = true;
+  }
+  
+  onReset() {
+    this.reg_submitted = false;
+    this.userRegisterform.reset();
   }
 
 }

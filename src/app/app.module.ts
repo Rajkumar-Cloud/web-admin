@@ -9,11 +9,13 @@ import { UserAccountComponent } from './user-account/user-account.component';
 import { HomeComponent } from './home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from './_services/authentication.service';
+import { AlertComponent } from './_components/alert/alert.component';
 @NgModule({
   declarations: [
     AppComponent,
     UserAccountComponent,
-    HomeComponent
+    HomeComponent,
+    AlertComponent
   ],
   imports: [
     CommonModule,
