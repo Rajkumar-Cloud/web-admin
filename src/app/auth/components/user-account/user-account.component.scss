@@ -55,7 +55,8 @@ h6 span{
 [type="checkbox"]:checked,
 [type="checkbox"]:not(:checked){
   position: absolute;
-  left: -9999px;
+  left: 0;
+  visibility: hidden;
 }
 .checkbox:checked + label,
 .checkbox:not(:checked) + label{
