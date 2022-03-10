@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './shared/pages/home/home.component';
 import { AuthModule } from './auth/auth.module';
 import { AuthenticationService } from './shared/services/authentication.service';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AuthenticationService } from './shared/services/authentication.service'
     BrowserModule,
     AppRoutingModule,
     AuthModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     AuthenticationService

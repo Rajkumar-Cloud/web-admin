@@ -24,8 +24,8 @@ export class UserService {
   //   return this.http.get('/users/' +id);
   // }
 
-  register(user: User){
-    return this.http.post(`${environment.apiUrl}users/register`, user);
+  register(User: any){
+    return this.http.post(`${environment.apiUrl}/register.php`, User);
   }
 
 }

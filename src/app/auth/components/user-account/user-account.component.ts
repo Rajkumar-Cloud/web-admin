@@ -2,10 +2,11 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
-import { AlertService } from 'src/app/shared/services/alert.service';
+// import { AlertService } from 'src/app/shared/services/alert.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { MustMatch } from 'src/app/_helpers/must-match.validator';
 import { first } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-account',
@@ -21,9 +22,10 @@ export class UserAccountComponent implements OnInit {
   submitted = false;
   reg_submitted = false;
   returnUrl: string;
+  userReg_arr: any;
 
   constructor(private formBuilder:FormBuilder, private router: Router, private route: ActivatedRoute,
-    private authService: AuthenticationService, private userService: UserService, private alertService : AlertService) { 
+    private authService: AuthenticationService, private userService: UserService, private toastr: ToastrService) { 
       // if(this.authService.currentUserValue) {
       //   this.router.navigate(['/']);
       // }
@@ -58,21 +60,31 @@ export class UserAccountComponent implements OnInit {
 
   }
   
-  onRegisterSubmit() { this.alertService.clear();
+  onRegisterSubmit() {    
     this.reg_submitted = true;
-    this.alertService.clear();
     if(this.userRegisterform.invalid) {
       return;
     }
+    this.userReg_arr = {
+        first_name: this.userRegisterform.controls['fullname'].value,
+        email: this.userRegisterform.controls['useremailId'].value,
+        mobileno: this.userRegisterform.controls['usermobileno'].value,        
+        password: this.userRegisterform.controls['userNewpassword'].value,
+    }
     // console.log(this.userRegisterform.controls['fullname']+':'+this.userRegisterform.controls['fullname'].value);
     this.loading_reg = true;
-    this.userService.register(this.userRegisterform.value).pipe(first()).subscribe({
-      next: () => {
-          this.alertService.success("Registration Successful", 'Success Registeration');
+    this.userService.register(this.userReg_arr).pipe(first()).subscribe({
+      next: (response: any) => {
+          this.loading_reg = false;  
+          if(response.success == 1) {      
+            this.toastr.success(response.message,"Successfully registered!");
+          } else {
+            this.toastr.error(response.message, "Existing user!");
+          }
           this.router.navigate(['../user-account'], {relativeTo: this.route});
       } ,
       error: error => {
-          this.alertService.error(error);
+         this.toastr.error("Problem to registered", error.message);
           this.loading = false;
       }
     });
@@ -83,10 +95,5 @@ export class UserAccountComponent implements OnInit {
     this.userRegisterform.reset();
   }
 
-  private displaySuccess() {
-    this.alertService.success("Profile photo successfully uploaded!",
-      { autoClose: false }
-    );
-  }
 
 }

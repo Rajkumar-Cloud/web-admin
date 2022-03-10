@@ -27,6 +27,7 @@
     "font-awesome": "^4.7.0",
     "material-components-web": "^13.0.0",
     "ngx-progressbar": "^7.0.0",
+    "ngx-toastr": "^14.2.2",
     "rxjs": "~7.5.0",
     "rxjs-compat": "^6.6.7",
     "tslib": "^2.3.0",
